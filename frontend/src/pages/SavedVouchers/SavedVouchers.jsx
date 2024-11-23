@@ -1071,6 +1071,7 @@ const SavedVouchers = () => {
   };
 
   const handleUseVoucher = (code) => {
+    console.log("Setting voucher code:", code); // Debug log
     setVoucherCode(code);
     toast.success('Voucher applied successfully!', {
       autoClose: 500,
@@ -1107,13 +1108,15 @@ const SavedVouchers = () => {
               <h2>{voucher.code}</h2>
               <p>Discount: {voucher.discount ? `${voucher.discount}%` : 'N/A'}</p>
               <p>
+                Min Order Value: {voucher.minimumAmount ? `${voucher.minimumAmount.toLocaleString('vi-VN')} USD` : 'N/A'}
+              </p>
+              <p>
+                Max Discount: {voucher.maximumDiscount ? `${voucher.maximumDiscount.toLocaleString('vi-VN')} USD` : 'N/A'}
+              </p>
+              <p>
                 Valid From: {voucher.startDate ? new Date(voucher.startDate).toLocaleDateString() : 'N/A'} to{' '}
                 {voucher.endDate ? new Date(voucher.endDate).toLocaleDateString() : 'N/A'}
               </p>
-              <p>
-                Min Order Value: {voucher.minimumAmount ? `${voucher.minimumAmount.toLocaleString('vi-VN')} VND` : 'N/A'}
-              </p>
-
               <div className="voucher-actions">
                 <button onClick={() => handleUseVoucher(voucher.code)}>Use</button>
                 <button onClick={() => handleDeleteVoucher(voucher.code)}>Delete</button>
