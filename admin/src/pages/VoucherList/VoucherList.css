@@ -75,6 +75,7 @@
     text-align: center;
     margin-bottom: 20px;
     color: #333;
+    margin-left: 10px;
   }
   
   table {
@@ -130,7 +131,7 @@
   
   .edit-form {
     position: fixed; /* Form sẽ được cố định trên màn hình */
-    top: 65%;
+    top: 50%;
     left: 65%;
     transform: translate(-50%, -50%);
     background-color: #ffffff00;
@@ -168,8 +169,13 @@
     box-sizing: border-box;
   }
   
+  .btn{
+    justify-content: space-between;
+  }
+
   .edit-form button {
     margin: 0 8px;
+    width: fit-content;
   }
   
   .edit-form button[type="submit"] {

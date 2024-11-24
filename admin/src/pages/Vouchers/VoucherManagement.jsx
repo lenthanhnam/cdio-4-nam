@@ -336,6 +336,7 @@ function VoucherForm() {
 
   return (
     <div className="form-container">
+      <h2>Create Voucher</h2>
       <form onSubmit={handleSubmit}>
         <label>
           Mã Voucher:

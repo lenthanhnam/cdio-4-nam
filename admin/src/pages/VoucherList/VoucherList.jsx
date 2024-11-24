@@ -382,6 +382,7 @@ import './VoucherList.css';
 
 function VoucherList() {
   const [vouchers, setVouchers] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
   const [editingVoucher, setEditingVoucher] = useState(null);
   const [editFormData, setEditFormData] = useState({
     code: '',
@@ -509,9 +510,34 @@ function VoucherList() {
     }
   };
 
+  const filteredVouchers = vouchers.filter((voucher) => {
+    const query = searchQuery.toLowerCase();
+    return (
+      voucher.code.toLowerCase().includes(query) ||
+      voucher.discount.toString().includes(query) ||
+      voucher.maximumDiscount.toString().includes(query) ||
+      voucher.minimumAmount.toString().includes(query) ||
+      voucher.usageLeft.toString().includes(query) ||
+      voucher.usageLimit.toString().includes(query) ||
+      new Date(voucher.startDate).toLocaleDateString().toLowerCase().includes(query) ||
+      new Date(voucher.endDate).toLocaleDateString().toLowerCase().includes(query)
+    );
+  });
+
+
   return (
     <div className="container">
       <h2>Voucher List</h2>
+      <div style={{display: 'flex', justifyContent: 'space-between'}}>
+        <input
+          style={{ marginBottom: '20px', width: '500px' }}
+          type="text"
+          placeholder="Search by code"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
+        <label style={{lineHeight: '50px', marginRight: '30px'}}>Total Vouchers: {filteredVouchers.length}</label>
+      </div>
       <table>
         <thead>
           <tr>
@@ -527,7 +553,7 @@ function VoucherList() {
           </tr>
         </thead>
         <tbody>
-          {vouchers.map((voucher) => (
+          {filteredVouchers.map((voucher) => (
             <tr key={voucher._id}>
               <td>{voucher.code}</td>
               <td>{voucher.discount}</td>
@@ -548,7 +574,6 @@ function VoucherList() {
 
       {editingVoucher && (
         <div className="edit-form">
-          <h3>Edit Voucher</h3>
           <form onSubmit={handleEditSubmit}>
             <label>
               Code:
@@ -620,10 +645,12 @@ function VoucherList() {
                 required
               />
             </label>
-            <button type="submit">Save</button>
-            <button type="button" onClick={() => setEditingVoucher(null)}>
-              Cancel
-            </button>
+            <div className="btn">
+              <button type="submit">Save</button>
+              <button type="button" onClick={() => setEditingVoucher(null)}>
+                Cancel
+              </button>
+            </div>
           </form>
         </div>
       )}

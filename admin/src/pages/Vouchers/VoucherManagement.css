@@ -2,10 +2,17 @@
 
 /* Container để căn giữa form */
 .form-container {
-  display: flex;
+  /* display: flex; */
   justify-content: center;
   align-items: center;
   height: 100vh;
+}
+
+h2 {
+  text-align: center;
+  margin-top: 20px;
+  margin-left: 100px;
+  color: #333;
 }
 
 form {
@@ -20,7 +27,7 @@ form {
   justify-content: center;
   align-items: center;
   margin-left: 120px;
-  margin-top: -200px;
+  margin-top: 50px;
 }
 
 label {

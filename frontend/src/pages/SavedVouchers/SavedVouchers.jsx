@@ -1091,6 +1091,7 @@ const SavedVouchers = () => {
 
       <div className="voucher-search">
         <input
+          style={{outline: 'none'}}
           type="text"
           value={voucherCodeInput}
           onChange={(e) => setVoucherCodeInput(e.target.value)}
