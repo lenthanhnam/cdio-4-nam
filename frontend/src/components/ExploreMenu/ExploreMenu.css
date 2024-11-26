@@ -13,7 +13,7 @@
 }
 .explore-menu-list{
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     gap: 30px;
     text-align: center;
@@ -33,11 +33,38 @@
   transition: 0.2s;
 
 }
+.explore-menu-list-include .btn{
+   
+    width: 30%;
+    height: 40px;
+    border-radius: 5%;
+    cursor: pointer ;
+    margin: 0px 14px; 
+    background-color: rgb(243, 171, 71);
+
+}
+.explore-menu-list-include .btn:hover {
+    background-color:#4caf50; 
+    color: white;
+    transform: scale(1.05);
+    
+}
+
+  
+.explore-menu-list-include .btn.active {
+    background-color: #4caf50; 
+    color: #fff;              
+    border-color: #4caf50;    
+  }
+
+  
+
 .explore-menu-list-item p{
     margin-top: 10px;
     color: #747474;
     font-size: max(1.4vw,1.6vw);
     cursor: pointer;
+    
 }
 .explore-menu hr{
     margin: 10px 0px;
@@ -56,4 +83,5 @@
       font-size: 14px;  
     }
 }
+
 

@@ -11,8 +11,10 @@
 .cart-items-item{
     margin:10px 0px;
     color: black;
-    display: flex;
-    justify-content: space-between;
+}
+.cart-items-item .quantity{
+  display: flex;
+  gap: .5rem;
 }
 .cart-items-item img{
     width: 50px;
@@ -24,6 +26,7 @@
 }
 .cart-items-item .cross{
     cursor: pointer;
+
 }
 .cart-bottom{
     margin-top: 80px;
@@ -32,6 +35,7 @@
     gap: max(12vw,20px );
 
 }
+
 .cart-total{
     flex: 1;
     display: flex;

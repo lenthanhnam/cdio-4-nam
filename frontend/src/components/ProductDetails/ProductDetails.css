@@ -1,0 +1,111 @@
+/* Đảm bảo rằng phần chứa tất cả thông tin sản phẩm chiếm toàn bộ chiều rộng */
+.product-details {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+  max-width: 1200px; /* Chiều rộng tối đa của phần details */
+  margin: 0 auto;
+  gap: 30px; /* Khoảng cách giữa hình ảnh và thông tin sản phẩm */
+}
+
+/* Thông tin về sản phẩm */
+.product-details-info {
+  flex: 1; /* Chiếm toàn bộ chiều rộng còn lại */
+  max-width: 60%; /* Chiều rộng tối đa cho phần thông tin sản phẩm */
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* Hình ảnh sản phẩm */
+.product-details-image {
+  flex: 1;
+  max-width: 40%; /* Giới hạn chiều rộng của hình ảnh */
+  padding: 20px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+}
+
+/* Hình ảnh sản phẩm tự động điều chỉnh chiều rộng */
+.product-details-image img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+/* Các nút và phần thông tin mô tả sản phẩm */
+.product-details-info h1 {
+  font-size: 36px;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+.product-details-info .product-description {
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+.product-details-info .product-price {
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+/* Các nút thêm vào giỏ hàng */
+.product-counter {
+  margin-top: 20px;
+}
+
+.add-to-cart-btn {
+  padding: 12px 24px;
+  background-color: #007bff;
+  color: white;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.add-to-cart-btn:hover {
+  background-color: #0056b3;
+}
+
+.counter-controls {
+  display: flex;
+  align-items: center;
+  width: 15%;
+  height:80%;
+}
+.counter-controls span{
+  border: 1px solid #ccc;
+   text-align: center;
+   padding: 7px 10px;
+}
+.counter-btn {
+  padding: 5px 5px;
+  background-color: #ddd;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  font-size: 18px;
+  border-radius: 0;
+}
+
+.counter-btn:hover {
+  background-color: #bbb;
+}
+
+/* Back to Home button */
+.back-btn {
+  margin-top: 20px;
+  padding: 12px 24px;
+  background-color: #f8f9fa;
+  color: #333;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.back-btn:hover {
+  background-color: #e9ecef;
+}
