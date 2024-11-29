@@ -2,10 +2,11 @@ import React, { useContext, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { StoreContext } from '../../context/StoreContext';
 import './ProductDetails.css';
-import LoginPopup from '../LoginPopup/LoginPopup';
+import ReviewComponent from '../ReviewComponent/ReviewComponent'; // Đường dẫn tới ReviewComponent
+import LoginPopup from '../LoginPopup/LoginPopup'; // Import LoginPopup
 
 const ProductDetails = () => {
-  const { id } = useParams(); // Lấy ID từ URL
+  const { id } = useParams(); 
   const { food_list, url, cartItems, addTocart, removeFromCart, isLoggedIn } = useContext(StoreContext); // Sử dụng StoreContext
   const navigate = useNavigate();
   const [showLoginPopup, setShowLoginPopup] = useState(false); // State điều khiển hiển thị LoginPopup
@@ -17,9 +18,9 @@ const ProductDetails = () => {
   const handleAddToCart = (productId) => {
     if (!isLoggedIn) {
       setShowLoginPopup(true); // Hiển thị popup đăng nhập nếu chưa đăng nhập
-      return;
+    } else {
+      addTocart(productId); // Thêm vào giỏ hàng nếu đã đăng nhập
     }
-    addTocart(productId); // Thêm vào giỏ hàng nếu đã đăng nhập
   };
 
   // Nếu không tìm thấy sản phẩm theo ID
@@ -41,8 +42,8 @@ const ProductDetails = () => {
         <h1>{product.name}</h1>
         <p className="product-description">{product.description}</p>
         <p className="product-price">Price: ${product.price}</p>
-
-        {/* Kiểm tra sản phẩm đã có trong giỏ hàng hay chưa */}
+  
+        {/* Kiểm tra xem sản phẩm đã có trong giỏ hàng chưa */}
         <div className="product-counter">
           {!cartItems[product._id] ? (
             <button className="add-to-cart-btn" onClick={() => handleAddToCart(product._id)}>
@@ -60,16 +61,23 @@ const ProductDetails = () => {
             </div>
           )}
         </div>
-
+  
         <button className="back-btn" onClick={() => navigate('/')}>
           Back to Home
         </button>
       </div>
-
-      {/* Hiển thị LoginPopup nếu chưa đăng nhập */}
+  
+      {/* Thành phần ReviewComponent */}
+      <div className="product-reviews-section">
+        <h2>Customer Reviews</h2>
+        <ReviewComponent productId={product._id} />
+      </div>
+  
+      {/* Hiển thị LoginPopup nếu cần */}
       {showLoginPopup && <LoginPopup setShowLogin={setShowLoginPopup} />}
     </div>
   );
+  
 };
 
 export default ProductDetails;

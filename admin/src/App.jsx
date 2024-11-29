@@ -5,10 +5,12 @@ import {  Routes ,Route} from 'react-router-dom'
 import Add from './pages/Add/Add'
 import List from './pages/List/List'
 import Orders from './pages/Orders/Orders'
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import User from './pages/User/User'
+import Statiscal from './pages/statiscal/Statiscal'
 import VoucherManagement from './pages/Vouchers/VoucherManagement'
 import VoucherList from './pages/VoucherList/VoucherList'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 const App = () => {
@@ -24,6 +26,8 @@ const App = () => {
          <Route path='/add' element={<Add url={url}/>}/>
          <Route path='/list' element={<List url={url}/>}/>
          <Route path='/orders' element={<Orders url={url}/>}/>
+         <Route path='/statiscal' element={<Statiscal url={url}/>}/>
+         <Route path='/user' element={<User url={url}/>}/>
          <Route path='/vouchers' element={<VoucherManagement url={url}/>}/>
          <Route path='/voucher-list' element={<VoucherList url={url}/>}/>
        </Routes>

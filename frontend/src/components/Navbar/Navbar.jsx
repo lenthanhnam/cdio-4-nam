@@ -15,8 +15,10 @@ const Navbar = ({ setShowLogin }) => {
   const logout = () => {
     localStorage.removeItem("token"); // Xóa token từ localStorage
     setToken("");                     // Reset token trong Context
-    navigate("/");                    // Điều hướng về trang chủ
+    // navigate("/");                    // Điều hướng về trang chủ
+    window.location.reload();         // Reload lại trang
   };
+  
 
   return (
     <div className="navbar">
@@ -70,7 +72,6 @@ const Navbar = ({ setShowLogin }) => {
           {getTotalCartAmount() > 0 && <div className="dot"></div>}
         </div>
         <Link to='/voucher-list-user'><img  src={assets.voucher_icon} alt=''/></Link>
-
         {/* Authentication */}
         {!token ? (
           <button
@@ -88,6 +89,13 @@ const Navbar = ({ setShowLogin }) => {
                 <p>Orders</p>
               </li>
               <hr />
+              
+              <li onClick={() => navigate('/customerinfo')}>
+                  <img src={assets.info1_icon} alt="" />
+                  <p>Customer Info</p>
+                </li>
+                <hr />
+
               <li onClick={logout}>
                 <img src={assets.logout_icon} alt="Logout" />
                 <p>Logout</p>

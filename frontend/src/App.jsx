@@ -10,6 +10,7 @@ import Verify from './pages/Verify/Verify'
 import MyOrders from './pages/MyOrders/MyOrders'
 import ProductDetails from './components/ProductDetails/ProductDetails'
 import SavedVouchers from './pages/SavedVouchers/SavedVouchers'
+import CustomerInfo from './pages/CustomerInfo/CustomerInfo'; 
 const App = () => {
    const [showLogin,setShowLogin]=useState(false)
   return (
@@ -25,6 +26,7 @@ const App = () => {
       <Route path='/myorders' element={<MyOrders/>} />
       <Route path="/product/:id" element={<ProductDetails/>} />
       <Route path='/voucher-list-user' element={<SavedVouchers/>} />
+      <Route path="/customerinfo" element={<CustomerInfo />}/>
      </Routes>
     </div>
     <Footer/>

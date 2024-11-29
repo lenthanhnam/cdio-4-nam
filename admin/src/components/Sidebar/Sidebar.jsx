@@ -18,6 +18,14 @@ const Sidebar = () => {
           <img  className='push' src={assets.order} alt="" />
           <p>Orders</p>
         </NavLink>
+        <NavLink to='/statiscal' className="sidebar-option">
+          <img  className='push' src={assets.tt} alt="" />
+          <p>Statiscal</p>
+        </NavLink>
+        <NavLink to='/user' className="sidebar-option">
+          <img  className='push' src={assets.user} alt="" />
+          <p>User</p>
+        </NavLink>
         <NavLink to='/vouchers' className="sidebar-option">
           <img  className='push' src={assets.voucher} alt="" />
           <p>vouchers</p>

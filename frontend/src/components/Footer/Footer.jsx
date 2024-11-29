@@ -26,14 +26,14 @@ const Footer = () => {
         <div className="footer-content-right">
           <h2>GET IN TOUCH</h2>
           <ul>
-            <li>+84 70-241-0898</li>
-            <li>Contact@VanTiz.com</li>
+            <li>+84 908-333-33</li>
+            <li>Contact@TheFood.com</li>
           </ul>
         </div>
       </div>
       <hr />
       <p className="footer-copyright">
-        CopyRight 2024 Vantiz.cpm - ALL right reserved.
+        CopyRight 2024 TheFood.cpm - ALL right reserved.
       </p>
     </div>
   );

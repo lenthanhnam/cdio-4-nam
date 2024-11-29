@@ -15,33 +15,37 @@ const LoginPopup = ({ setShowLogin }) => {
     password: '',
   });
 
+  // Xử lý thay đổi dữ liệu form
   const onChangeHandler = (event) => {
-    const name = event.target.name;
-    const value = event.target.value;
-    setData((data) => ({ ...data, [name]: value }));
+    const { name, value } = event.target;
+    setData((prevData) => ({ ...prevData, [name]: value }));
   };
 
-  const onLogin = async (event) => {
-    event.preventDefault(); // Ngăn chặn hành động mặc định của form khi submit
-    let newUrl = url;
-    if (currState === 'Login') {
-      newUrl += '/api/user/login';
-    } else {
-      newUrl += '/api/user/register';
-    }
+  // Xử lý logic đăng nhập hoặc đăng ký
+  const onSubmitHandler = async (event) => {
+    event.preventDefault(); // Ngăn chặn hành vi mặc định của form
+    const endpoint = currState === 'Login' ? '/api/user/login' : '/api/user/register';
+    const apiUrl = `${url}${endpoint}`;
 
     try {
-      const response = await axios.post(newUrl, data);
-      if (response.data.success) {
-        setToken(response.data.token);
-        localStorage.setItem('token', response.data.token);
-        setShowLogin(false);
-        toast.success('Đăng nhập thành công!', {
+      const response = await axios.post(apiUrl, data);
+      const { success, token, message } = response.data;
+
+      if (success) {
+        setToken(token);
+        localStorage.setItem('token', token);
+        setShowLogin(false); // Đóng popup
+        toast.success(currState === 'Login' ? 'Đăng nhập thành công!' : 'Đăng ký thành công!', {
           position: 'top-right',
           autoClose: 3000,
         });
+
+        // Reload lại trang sau khi đăng nhập
+        setTimeout(() => {
+          window.location.reload();
+        }, 500); // Delay một chút để hiển thị thông báo
       } else {
-        toast.error(response.data.message, {
+        toast.error(message, {
           position: 'top-right',
           autoClose: 3000,
         });
@@ -56,61 +60,76 @@ const LoginPopup = ({ setShowLogin }) => {
 
   return (
     <div className="login-popup">
-      <form onSubmit={onLogin} className="login-popup-container">
+      <form onSubmit={onSubmitHandler} className="login-popup-container">
+        {/* Tiêu đề và nút đóng */}
         <div className="login-popup-title">
           <h2>{currState}</h2>
-          <img onClick={() => setShowLogin(false)} src={assets.cross_icon} alt="" />
+          <img
+            onClick={() => setShowLogin(false)}
+            src={assets.cross_icon}
+            alt="Close"
+            className="close-icon"
+          />
         </div>
+
+        {/* Các ô nhập liệu */}
         <div className="login-popup-inputs">
-          {currState === 'Login' ? (
-            <></>
-          ) : (
+          {currState === 'Sign Up' && (
             <input
               name="name"
-              onChange={onChangeHandler}
-              value={data.name}
               type="text"
               placeholder="Your Name"
+              value={data.name}
+              onChange={onChangeHandler}
               required
             />
           )}
           <input
             name="email"
-            onChange={onChangeHandler}
-            value={data.email}
             type="email"
-            placeholder="Your Mail"
+            placeholder="Your Email"
+            value={data.email}
+            onChange={onChangeHandler}
             required
           />
           <input
             name="password"
-            onChange={onChangeHandler}
-            value={data.password}
             type="password"
             placeholder="Password"
+            value={data.password}
+            onChange={onChangeHandler}
             required
           />
         </div>
+
+        {/* Nút Submit */}
         <button type="submit">
-          {currState === 'Sign Up' ? 'Create account' : 'Login'}
+          {currState === 'Sign Up' ? 'Create Account' : 'Login'}
         </button>
+
+        {/* Điều kiện sử dụng */}
         <div className="login-popup-condition">
           <input type="checkbox" required />
           <p>By continuing, I agree to the terms of use & privacy policy</p>
         </div>
-        {currState === 'Login' ? (
-          <p>
-            Create a new account?{' '}
-            <span onClick={() => setCurrState('Sign Up')}>Click here</span>
-          </p>
-        ) : (
-          <p>
-            Already have an account?{' '}
-            <span onClick={() => setCurrState('Login')}>Login Here</span>
-          </p>
-        )}
+
+        {/* Chuyển đổi giữa đăng nhập và đăng ký */}
+        <p>
+          {currState === 'Login' ? (
+            <>
+              Create a new account?{' '}
+              <span onClick={() => setCurrState('Sign Up')}>Click here</span>
+            </>
+          ) : (
+            <>
+              Already have an account?{' '}
+              <span onClick={() => setCurrState('Login')}>Login Here</span>
+            </>
+          )}
+        </p>
       </form>
-      {/* Thêm ToastContainer để hiển thị thông báo */}
+
+      {/* Toast Container */}
       <ToastContainer />
     </div>
   );

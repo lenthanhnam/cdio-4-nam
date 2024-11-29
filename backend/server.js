@@ -6,8 +6,8 @@ import userRouter from "./routes/userRoute.js";
 import 'dotenv/config'
 import cartRouter from "./routes/cartRoute.js";
 import orderRoute from "./routes/orderRoute.js";
-import voucherRoutes from './routes/voucherRoutes.js';
-
+import reviewRouter from "./routes/reviewRoute.js";
+import voucherRoutes from './routes/VoucherRoutes.js';
 const app = express();
 const port = 4000;
 
@@ -19,12 +19,13 @@ app.use(cors());
 connectDB();
 
 //api endpoints
-app.use('/', voucherRoutes);
 app.use("/api/food",foodRouter)
 app.use('/images',express.static('uploads'))
 app.use('/api/user',userRouter)
 app.use('/api/cart',cartRouter)
 app.use('/api/order',orderRoute)
+app.use('/reviews', reviewRouter);
+app.use('/', voucherRoutes);
 // Định tuyến mặc định
 app.get("/", (req, res) => {
   res.send("API is running");

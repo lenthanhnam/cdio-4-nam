@@ -1,5 +1,5 @@
 import basket_icon from './basket_icon.png'
-import logo from './logo.png'
+import logo from './logo.jpg'
 import header_img from './header_img.png'
 import search_icon from './search_icon.png'
 import menu_1 from './menu_1.jpg'
@@ -10,11 +10,12 @@ import menu_5 from './menu_5.jpg'
 import menu_6 from './menu_6.jpg'
 import menu_7 from './menu_7.jpg'
 import menu_8 from './menu_8.jpg'
-
+import info1_icon from './info1_icon.jpg'
 import bg1 from './bg1.png'
 import bg2 from './bg2.jpg'
 import bg3 from './bg3.png'
 import bg4 from './bg4.jpg'
+
 
 
 import add_icon_white from './add_icon_white.png'
@@ -58,7 +59,9 @@ export const assets = {
     bg2,
     bg3,
     bg4,
-    voucher_icon
+    voucher_icon,
+    info1_icon
+
 }
 
 export const menu_list = [
