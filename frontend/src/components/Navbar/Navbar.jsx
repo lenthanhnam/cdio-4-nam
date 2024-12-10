@@ -95,6 +95,11 @@ const Navbar = ({ setShowLogin }) => {
                   <p>Customer Info</p>
                 </li>
                 <hr />
+                <li onClick={() => navigate('/changePassword')}>
+                  <img src={assets.pw} alt="" />
+                  <p>Change Password</p>
+                </li>
+                <hr />
 
               <li onClick={logout}>
                 <img src={assets.logout_icon} alt="Logout" />

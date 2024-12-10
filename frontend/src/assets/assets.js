@@ -15,6 +15,9 @@ import bg1 from './bg1.png'
 import bg2 from './bg2.jpg'
 import bg3 from './bg3.png'
 import bg4 from './bg4.jpg'
+import pw from './pw.png'
+import mess from './messenger.png'
+import phone from './phone.jpg'
 
 
 
@@ -60,7 +63,10 @@ export const assets = {
     bg3,
     bg4,
     voucher_icon,
-    info1_icon
+    info1_icon,
+    pw,
+    mess,
+    phone
 
 }
 

@@ -11,6 +11,8 @@ import MyOrders from './pages/MyOrders/MyOrders'
 import ProductDetails from './components/ProductDetails/ProductDetails'
 import SavedVouchers from './pages/SavedVouchers/SavedVouchers'
 import CustomerInfo from './pages/CustomerInfo/CustomerInfo'; 
+import ChangePassword from './pages/ChangePassword/ChangePassword'
+import Contact from './components/Contact/Contact'
 const App = () => {
    const [showLogin,setShowLogin]=useState(false)
   return (
@@ -27,7 +29,9 @@ const App = () => {
       <Route path="/product/:id" element={<ProductDetails/>} />
       <Route path='/voucher-list-user' element={<SavedVouchers/>} />
       <Route path="/customerinfo" element={<CustomerInfo />}/>
+      <Route path="/changepassword" element={<ChangePassword/>}/>
      </Routes>
+     <Contact/>
     </div>
     <Footer/>
     </>

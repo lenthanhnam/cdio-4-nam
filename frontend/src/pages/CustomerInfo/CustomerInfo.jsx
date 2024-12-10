@@ -10,38 +10,39 @@ const CustomerInfo = () => {
     phone: '',
     address: '',
   });
-  const [loading, setLoading] = useState(true); // Trạng thái loading
-  const [error, setError] = useState(null); // Trạng thái lỗi
 
-  // Hàm giải mã JWT token thủ công
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [firstNameError, setFirstNameError] = useState('');
+  const [lastNameError, setLastNameError] = useState('');
+  const [addressError, setAddressError] = useState(''); // Thông báo lỗi cho Address
+
   const parseJwt = (token) => {
     try {
-      const base64Url = token.split('.')[1];  // Phần Payload của token
-      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');  // Chuyển đổi Base64 URL thành Base64 chuẩn
+      const base64Url = token.split('.')[1];
+      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
       const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
         return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
       }).join(''));
       
-      return JSON.parse(jsonPayload); // Trả về đối tượng JSON chứa thông tin người dùng
+      return JSON.parse(jsonPayload);
     } catch (e) {
       console.error("Error decoding token", e);
-      return null;  // Nếu có lỗi trong quá trình giải mã, trả về null
+      return null;
     }
   };
 
-  // Lấy userId từ token trong localStorage
   const getUserIdFromToken = () => {
-    const token = localStorage.getItem('token'); // Giả sử token được lưu trong localStorage với tên 'token'
+    const token = localStorage.getItem('token');
     if (token) {
-      const decodedToken = parseJwt(token); // Giải mã token thủ công
-      return decodedToken ? decodedToken.id : null; // Lấy ID người dùng từ token
+      const decodedToken = parseJwt(token);
+      return decodedToken ? decodedToken.id : null;
     }
     return null;
   };
 
-  const userId = getUserIdFromToken(); // Lấy userId từ token
+  const userId = getUserIdFromToken();
 
-  // Lấy thông tin người dùng khi component mount
   useEffect(() => {
     if (!userId) {
       setError('User not authenticated.');
@@ -53,7 +54,7 @@ const CustomerInfo = () => {
       try {
         const response = await axios.get(`http://localhost:4000/api/user/${userId}`);
         if (response.data.success) {
-          setCustomerData(response.data.data); // Gán thông tin người dùng vào state
+          setCustomerData(response.data.data);
         } else {
           setError('Failed to fetch user data.');
         }
@@ -61,25 +62,58 @@ const CustomerInfo = () => {
         console.error(err);
         setError('An error occurred while fetching user data.');
       } finally {
-        setLoading(false); // Dừng trạng thái loading
+        setLoading(false);
       }
     };
 
     fetchUserData();
   }, [userId]);
 
-  // Xử lý thay đổi input (chỉ cho phép chỉnh sửa các trường ngoại trừ email)
   const handleChange = (e) => {
     const { name, value } = e.target;
-    if (name === 'email') return; // Không cho phép chỉnh sửa email
     setCustomerData({ ...customerData, [name]: value });
   };
 
-  // Xử lý cập nhật thông tin
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    setFirstNameError('');
+    setLastNameError('');
+    setAddressError('');
+
+    let isValid = true;
+
+    // Kiểm tra firstName
+    const namePattern = /^[A-Za-z ]+$/;
+    if (!namePattern.test(customerData.firstName)) {
+      setFirstNameError('First Name must only contain letters and spaces.');
+      isValid = false;
+    }
+    if (customerData.firstName.length > 20) {
+      setFirstNameError('First Name must not exceed 20 characters.');
+      isValid = false;
+    }
+
+    // Kiểm tra lastName
+    if (!namePattern.test(customerData.lastName)) {
+      setLastNameError('Last Name must only contain letters and spaces.');
+      isValid = false;
+    }
+    if (customerData.lastName.length > 20) {
+      setLastNameError('Last Name must not exceed 20 characters.');
+      isValid = false;
+    }
+
+    // Kiểm tra Address (chỉ chứa chữ cái, số và khoảng trắng)
+    const invalidChars = /[^a-zA-Z0-9\s]/g;
+    if (invalidChars.test(customerData.address)) {
+      setAddressError('Address must only contain letters, numbers, and spaces.');
+      isValid = false;
+    }
+
+    if (!isValid) return;
+
     try {
-      // Gửi request cập nhật thông tin
       const response = await axios.put(`http://localhost:4000/api/user/update/${userId}`, customerData);
       if (response.data.success) {
         alert('Customer information updated successfully!');
@@ -92,81 +126,88 @@ const CustomerInfo = () => {
     }
   };
 
-  // Hiển thị loading khi đang tải dữ liệu
   if (loading) {
     return <p>Loading user data...</p>;
   }
 
-  // Hiển thị thông báo lỗi nếu có
   if (error) {
     return <p className="error">{error}</p>;
   }
 
   return (
     <div className="customer-info">
-  <h1>Customer Information</h1>
-  <form onSubmit={handleSubmit}>
-    <label>
-      First Name:
-      <input
-        type="text"
-        name="firstName"
-        placeholder="First Name"
-        value={customerData.firstName}
-        onChange={handleChange}
-        required
-      />
-    </label>
-    <label>
-      Last Name:
-      <input
-        type="text"
-        name="lastName"
-        placeholder="Last Name"
-        value={customerData.lastName}
-        onChange={handleChange}
-        required
-      />
-    </label>
-    <label>
-      Email:
-      <input
-        type="email"
-        name="email"
-        placeholder="Email"
-        value={customerData.email}
-        disabled={true} // Không cho phép sửa email
-        required
-      />
-    </label>
-    <label>
-      Phone:
-      <input
-        type="tel"
-        name="phone"
-        placeholder="Phone"
-        value={customerData.phone}
-        onChange={handleChange}
-        required
-        pattern="[0-9]{10}" // Chỉ cho phép nhập số (10 chữ số)
-        title="Phone number must be 10 digits"
-      />
-    </label>
-    <label>
-      Address:
-      <input
-        type="text"
-        name="address"
-        placeholder="Address"
-        value={customerData.address}
-        onChange={handleChange}
-        required
-      />
-    </label>
-    <button type="submit">Update</button>
-  </form>
-</div>
+      <h1>Customer Information</h1>
+      <form onSubmit={handleSubmit}>
+        <label>
+          First Name:
+          <input
+            type="text"
+            name="firstName"
+            placeholder="First Name"
+            value={customerData.firstName}
+            onChange={handleChange}
+            required
+            maxLength={20}
+          />
+          {firstNameError && <p className="error">{firstNameError}</p>}
+        </label>
 
+        <label>
+          Last Name:
+          <input
+            type="text"
+            name="lastName"
+            placeholder="Last Name"
+            value={customerData.lastName}
+            onChange={handleChange}
+            required
+            maxLength={20}
+          />
+          {lastNameError && <p className="error">{lastNameError}</p>}
+        </label>
+
+        <label>
+          Email:
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            value={customerData.email}
+            disabled={true}
+            required
+          />
+        </label>
+
+        <label>
+          Phone:
+          <input
+            type="tel"
+            name="phone"
+            placeholder="Phone"
+            value={customerData.phone}
+            onChange={handleChange}
+            required
+            pattern="[0-9]{10}"
+            title="Phone number must be 10 digits"
+          />
+        </label>
+
+        <label>
+          Address:
+          <input
+            type="text"
+            name="address"
+            placeholder="Address"
+            value={customerData.address}
+            onChange={handleChange}
+            required
+          />
+          {addressError && <p className="error">{addressError}</p>}
+        </label>
+
+        <button type="submit">Update</button>
+      </form>
+    </div>
   );
 };
 

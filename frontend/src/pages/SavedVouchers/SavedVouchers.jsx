@@ -1,3 +1,4 @@
+
 import React, { useContext, useState, useEffect } from 'react';
 import './SavedVouchers.css';
 import { StoreContext } from '../../context/StoreContext';
@@ -24,12 +25,6 @@ const SavedVouchers = () => {
       return;
     }
 
-    const existingVoucher = voucherData.find((voucher) => voucher.code === voucherCodeInput);
-    if (existingVoucher) {
-      toast.error('This voucher has already been added!');
-      return;
-    }
-
     try {
       const response = await fetch(`http://localhost:4000/api/vouchers/code/${voucherCodeInput}`);
       if (response.ok) {
@@ -38,9 +33,9 @@ const SavedVouchers = () => {
         setVoucherData(updatedData);
         localStorage.setItem('vouchers', JSON.stringify(updatedData));
         setVoucherCodeInput(''); // Clear the input field
-        toast.success('Voucher applied successfully!');
+        toast.success('Voucher added successfully!');
       } else {
-        toast.error('Voucher does not exist in the system.');
+        toast.error('Voucher does not exist.');
       }
     } catch (error) {
       toast.error('An error occurred while connecting to the server.');
@@ -64,7 +59,7 @@ const SavedVouchers = () => {
           >
             Confirm
           </button>
-          <button className="cancel-button" onClick={() => toast.dismiss(toastId)}>Cancel</button>
+          <button className="cancel-button" onClick={() => {toast.dismiss(toastId);toast.success('Cancelled!');}}>Cancel</button>
         </div>
       </div>,
       {
@@ -78,8 +73,24 @@ const SavedVouchers = () => {
   };
 
   const handleUseVoucher = (code) => {
-    console.log("Setting voucher code:", code); // Debug log
-    setVoucherCode(code);
+    const voucher = voucherData.find(v => v.code === code);
+    const now = new Date();
+
+    if (voucher) {
+      if (new Date(voucher.startDate) > now) {
+        toast.error('Voucher is not yet valid.');
+        return;
+      }
+      if (new Date(voucher.endDate) < now) {
+        toast.error('Voucher has expired.');
+        return;
+      }
+      if (voucher.usageLeft >= voucher.usageLimit) {
+        toast.error('Voucher has no remaining uses.');
+        return;
+      }
+      // Proceed with using the voucher
+      setVoucherCode(code);
     toast.success('Voucher applied successfully!', {
       autoClose: 500,
       onClose: () => {
@@ -89,6 +100,7 @@ const SavedVouchers = () => {
         navigate('/cart');
       },
     });
+    }
   };
 
   return (
@@ -98,7 +110,7 @@ const SavedVouchers = () => {
 
       <div className="voucher-search">
         <input
-          style={{outline: 'none'}}
+          style={{ outline: 'none' }}
           type="text"
           value={voucherCodeInput}
           onChange={(e) => setVoucherCodeInput(e.target.value)}
@@ -126,8 +138,8 @@ const SavedVouchers = () => {
                 {voucher.endDate ? new Date(voucher.endDate).toLocaleDateString() : 'N/A'}
               </p>
               <div className="voucher-actions">
-                <button onClick={() => handleUseVoucher(voucher.code)}>Use</button>
-                <button onClick={() => handleDeleteVoucher(voucher.code)}>Delete</button>
+                <button className="use-voucher-btn" onClick={() => handleUseVoucher(voucher.code)}>Use</button>
+                <button className="delete-voucher-btn" onClick={() => handleDeleteVoucher(voucher.code)}>Delete</button>
               </div>
             </div>
           ))}

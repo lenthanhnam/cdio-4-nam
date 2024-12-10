@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -14,9 +15,98 @@ function VoucherForm() {
 
   // Hàm kiểm tra tính hợp lệ của dữ liệu
   const validateForm = () => {
+    // Kiểm tra các trường trống
+    if (!code) {
+      toast.error('Voucher code is required.', {
+        position: 'top-right',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+      return false;
+    }
+    if (!discount) {
+      toast.error('Discount is required.', {
+        position: 'top-right',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+      return false;
+    }
+    if (parseInt(discount) > 100) {
+      toast.error('Discount cannot exceed 100%.', {
+        position: 'top-right',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+      return false;
+    }
+    if (!maximumDiscount) {
+      toast.error('Maximum value is required.', {
+        position: 'top-right',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+      return false;
+    }
+    if (!minimumAmount) {
+      toast.error('Minimum amount is required.', {
+        position: 'top-right',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+      return false;
+    }
+    if (!startDate) {
+      toast.error('Start date is required.', {
+        position: 'top-right',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+      return false;
+    }
+    if (!endDate) {
+      toast.error('End date is required.', {
+        position: 'top-right',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+      return false;
+    }
+    if (!usageLimit) {
+      toast.error('Usage limit is required.', {
+        position: 'top-right',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+      return false;
+    }
     // Kiểm tra các trường số âm hoặc 0
-    if (parseInt(usageLimit) <= 0 ) {
-      toast.error('Usage limit of uses must be greater than 0.', {
+    if (parseInt(usageLimit) <= 0) {
+      toast.error('Usage limit must be greater than 0.', {
         position: 'top-right',
         autoClose: 3000,
         hideProgressBar: false,
@@ -26,8 +116,8 @@ function VoucherForm() {
       });
       return false;
     }
-    if ( parseInt(maximumDiscount) <= 0) {
-      toast.error('Maximum discount reduction must be greater than 0.', {
+    if (parseInt(minimumAmount) < 0) {
+      toast.error('Minimum order value must be greater than 0.', {
         position: 'top-right',
         autoClose: 3000,
         hideProgressBar: false,
@@ -37,7 +127,18 @@ function VoucherForm() {
       });
       return false;
     }
-    if (parseInt(discount) <= 0 ) {
+    if (parseInt(maximumDiscount) <= 0) {
+      toast.error('Maximum value must be greater than 0.', {
+        position: 'top-right',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+      return false;
+    }
+    if (parseInt(discount) <= 0) {
       toast.error('Discount value must be greater than 0.', {
         position: 'top-right',
         autoClose: 3000,
@@ -48,10 +149,9 @@ function VoucherForm() {
       });
       return false;
     }
-
-    const currentDate = new Date();
-    const start = new Date(startDate);
-    const end = new Date(endDate);
+          const currentDate = new Date();
+          const start = new Date(startDate);
+          const end = new Date(endDate);
 
     // Kiểm tra ngày kết thúc trước ngày hôm nay
     if (end < currentDate) {
@@ -77,8 +177,8 @@ function VoucherForm() {
         draggable: true,
       });
       return false;
+//     }
     }
-
     return true;
   };
 
@@ -119,7 +219,7 @@ function VoucherForm() {
         setEndDate('');
         setUsageLimit('');
       } else {
-        toast.error('Voucher already exists!.', {
+        toast.error('Voucher already exists!', {
           position: 'top-right',
           autoClose: 3000,
           hideProgressBar: false,
@@ -151,7 +251,6 @@ function VoucherForm() {
             type="text"
             value={code}
             onChange={(e) => setCode(e.target.value)}
-            required
           />
         </label>
         <label>
@@ -160,16 +259,14 @@ function VoucherForm() {
             type="number"
             value={discount}
             onChange={(e) => setDiscount(e.target.value)}
-            required
           />
         </label>
         <label>
-          Maximum Discount(USD):
+          Maximum Value(USD):
           <input
             type="number"
             value={maximumDiscount}
             onChange={(e) => setMaximumDiscount(e.target.value)}
-            required
           />
         </label>
         <label>
@@ -178,7 +275,6 @@ function VoucherForm() {
             type="number"
             value={minimumAmount}
             onChange={(e) => setMinimumAmount(e.target.value)}
-            required
           />
         </label>
         <label>
@@ -187,7 +283,6 @@ function VoucherForm() {
             type="datetime-local"
             value={startDate}
             onChange={(e) => setStartDate(e.target.value)}
-            required
           />
         </label>
         <label>
@@ -196,7 +291,6 @@ function VoucherForm() {
             type="datetime-local"
             value={endDate}
             onChange={(e) => setEndDate(e.target.value)}
-            required
           />
         </label>
         <label>
@@ -205,7 +299,6 @@ function VoucherForm() {
             type="number"
             value={usageLimit}
             onChange={(e) => setUsageLimit(e.target.value)}
-            required
           />
         </label>
         <button type="submit">Save Voucher</button>

@@ -4,15 +4,13 @@ const userSchema=new mongoose.Schema({
     name:{type:String,required:true},
     email:{type:String,required:true,unique:true},
     password:{type:String,required:true},
-    // phone: { type: Number },
-    // address: {type: String},
-    // avatar: {type:String},
-    cartData:{type:Object,default:{}},
-    
+    cartData:{type:Object,default:{}},   
     firstName: { type: String, required: false }, 
     lastName: { type: String, required: false },  
     phone: { type: String, required: false },     
-    address: { type: String, required: false }
+    address: { type: String, required: false },
+    state: { type: String, required: false },
+    zipcode: { type: String, required: false },
 
 
 

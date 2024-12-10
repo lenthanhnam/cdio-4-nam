@@ -37,3 +37,8 @@ margin-top: 100px;
 .place-order .cart-total{
     margin-top: 5px;
 }
+.error {
+    color: red;
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+  }

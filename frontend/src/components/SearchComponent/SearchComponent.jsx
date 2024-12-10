@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react';
 import { StoreContext } from '../../context/StoreContext';
 import { Link } from 'react-router-dom';
 import { FaSearch } from 'react-icons/fa';
+import Fuse from 'fuse.js'; // Thư viện để tìm kiếm tương tự
 import './SearchComponent.css';
 
 const SearchComponent = () => {
@@ -9,9 +10,16 @@ const SearchComponent = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearchActive, setIsSearchActive] = useState(true);
 
-  const filteredFoodList = food_list.filter((item) =>
-    item.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  // Cấu hình Fuse.js để tìm kiếm tương tự
+  const fuse = new Fuse(food_list, {
+    keys: ['name'], // Tìm kiếm theo thuộc tính 'name'
+    threshold: 0.4, // Độ chính xác: 0.0 (hoàn hảo) -> 1.0 (rộng hơn)
+  });
+
+  // Lọc sản phẩm dựa trên từ khóa
+  const filteredFoodList = searchQuery
+    ? fuse.search(searchQuery).map((result) => result.item)
+    : [];
 
   const handleSearchItemClick = () => {
     setIsSearchActive(false);
@@ -45,7 +53,7 @@ const SearchComponent = () => {
               </Link>
             ))
           ) : (
-            <p>No results found</p>
+            <p>No similar results found</p>
           )}
         </div>
       )}

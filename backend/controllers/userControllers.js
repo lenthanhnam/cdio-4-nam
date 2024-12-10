@@ -92,13 +92,13 @@ const listUser=async(req,res)=>{
 }
 const updateUser = async (req, res) => {
   const { id } = req.params;
-  const { firstName, lastName, phone, address } = req.body;
+  const { firstName, lastName, phone, address,state,zipcode } = req.body;
 
   try {
     // Tìm và cập nhật thông tin người dùng theo ID
     const updatedUser = await userModel.findByIdAndUpdate(
       id,
-      { firstName, lastName, phone, address },
+      { firstName, lastName, phone, address,state,zipcode },
       { new: true }  // Trả về tài liệu đã được cập nhật
     );
 
@@ -137,4 +137,37 @@ const removeUser=async (req,res)=>{
     res.status(500).json({ success: false, message: "Error retrieving user data" });
   }
 };
-export  {loginUser,registerUser,listUser,removeUser,addUser,updateUser,getUserInfo}
+
+const changePassword = async (req, res) => {
+  console.log("Request received:", req.body);
+  const { oldPassword, newPassword } = req.body;
+  const userId = req.user.id; // Lấy ID từ token
+
+  try {
+    const user = await userModel.findById(userId);
+    if (!user) {
+      console.log("User not found");
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
+
+    const isMatch = await bcrypt.compare(oldPassword, user.password);
+    if (!isMatch) {
+      console.log("Old password is incorrect");
+      return res.status(400).json({ success: false, message: "Old password is incorrect" });
+    }
+
+    console.log("Passwords match. Updating...");
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+    user.password = hashedPassword;
+    await user.save();
+
+    console.log("Password updated successfully");
+    res.json({ success: true, message: "Password changed successfully" });
+  } catch (error) {
+    console.error("Error in changePassword:", error);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+};
+export  {loginUser,registerUser,listUser,removeUser,addUser,updateUser,getUserInfo,changePassword}
